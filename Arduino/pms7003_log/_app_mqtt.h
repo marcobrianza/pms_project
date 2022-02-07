@@ -1,6 +1,6 @@
 
 
-String mqttServer = "wmc.marcobrianza.it";
+String mqttServer = "mqtt.marcobrianza.it";
 int MQTT_PORT = 1883;
 
 String mqttUsername = "";
@@ -270,6 +270,7 @@ void mqttReceive(char* rawTopic, byte* rawPayload, unsigned int length) {
 
 void publishSensor() {
 
+  sht3x_loop();
   StaticJsonDocument<MQTT_BUFFER> jPayload;
 
   jPayload["name"] = name;

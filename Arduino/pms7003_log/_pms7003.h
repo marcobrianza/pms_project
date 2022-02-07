@@ -38,52 +38,11 @@ void PMS7003_setup() {
   pms.wakeUp();
 }
 
-bool PMS_7003_loop() {
-
-  if (pms.read(data)) {
-    return (true);
-    Serial.println("newdata");
-    newPmsData = true;
-  } else {
-    return (false);
-  }
-}
-
-
-//bool pms_loop() {
-//  bool dataReady = false;
-//  if (sensorState == SENSOR_SLEEPING) {
-//    if (millis() - lastSensorRun > SENSOR_READING_INTERVAL) {
-//      lastSensorRun = millis();
-//      pms.wakeUp();
-//      pms.setMode(PASSIVE);
-//      sensorState = SENSOR_RUNNING; if (DEBUG_PMS) Serial.println("SENSOR_RUNNING");
-//      sensorWarmupStart = millis();
-//      int sensorState = 0; // running
-//    }
-//  } else {
-//    if (millis() - sensorWarmupStart > WARMUP_TIME) {
-//      if (samples > 0) {
-//        if (DEBUG_PMS) Serial.println("samples:" + String(samples));
-//        samples = 0;
-//        dataReady = true;
-//      }
-//      sensorState = SENSOR_SLEEPING;  if (DEBUG_PMS) Serial.println("SENSOR_SLEEPING");
-//      pms.sleep();
-//
-//    } else {
-//      if (pms.read(0)) samples++;
-//    }
-//  }
-//
-//  return dataReady;
-//}
-
-
 void PMS_7003_makeCSV()  {
   sensorPM = String(data.PM_SP_UG_1_0) + SEP + String(data.PM_AE_UG_1_0) + SEP + String(data.PM_SP_UG_2_5) + SEP + String(data.PM_AE_UG_2_5) + SEP + String(data.PM_SP_UG_10_0) + SEP + String(data.PM_AE_UG_10_0);
   sensorRAW = String(data.PM_RAW_0_3) + SEP + String(data.PM_RAW_0_5) + SEP + String(data.PM_RAW_1_0) + SEP + String(data.PM_RAW_2_5) + SEP + String(data.PM_RAW_5_0) + SEP + String(data.PM_RAW_10_0);
 }
+
 
 void PMS7003_print() {
   Serial.print("PM 1.0 (ug/m3) CF=1: ");
@@ -124,3 +83,42 @@ void PMS7003_print() {
   Serial.println(data.PM_RAW_10_0);
 
 }
+
+bool PMS_7003_loop() {
+  bool ret = false;
+  if (pms.read(data)) {
+    //Serial.println("newdata");
+    ret = true;
+  }
+  return (ret);
+}
+
+
+//bool pms_loop() {
+//  bool dataReady = false;
+//  if (sensorState == SENSOR_SLEEPING) {
+//    if (millis() - lastSensorRun > SENSOR_READING_INTERVAL) {
+//      lastSensorRun = millis();
+//      pms.wakeUp();
+//      pms.setMode(PASSIVE);
+//      sensorState = SENSOR_RUNNING; if (DEBUG_PMS) Serial.println("SENSOR_RUNNING");
+//      sensorWarmupStart = millis();
+//      int sensorState = 0; // running
+//    }
+//  } else {
+//    if (millis() - sensorWarmupStart > WARMUP_TIME) {
+//      if (samples > 0) {
+//        if (DEBUG_PMS) Serial.println("samples:" + String(samples));
+//        samples = 0;
+//        dataReady = true;
+//      }
+//      sensorState = SENSOR_SLEEPING;  if (DEBUG_PMS) Serial.println("SENSOR_SLEEPING");
+//      pms.sleep();
+//
+//    } else {
+//      if (pms.read(0)) samples++;
+//    }
+//  }
+//
+//  return dataReady;
+//}

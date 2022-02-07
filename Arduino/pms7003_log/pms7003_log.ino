@@ -82,8 +82,16 @@ void loop() {
   mqtt_loop();
 
   // app loop
-  PMS_7003_loop();
-  sht3x_loop() ;
+  if (PMS_7003_loop())
+  {
+    //PMS7003_print();
+    PMS_7003_makeCSV();
+    Serial.print(sensorPM);
+    Serial.print(" - ");
+    Serial.println(sensorRAW);
+    //publishSensor();
+  }
+  //sht3x_loop() ;
 
   if (newSettings) {
     newSettings = false;
